@@ -1,0 +1,11 @@
+/* src/styles/Variables.css */
+
+:root {
+    --background-color: #121212;
+    --font-color: #ffffff;
+    --highlight-orange: #FFA500;
+    --highlight-yellow: #FFD700;
+    --gray-color: #333333;
+    --dark-gray: #222222;
+    --font-family: 'Arial, sans-serif';
+}

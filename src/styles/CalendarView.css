@@ -1,0 +1,95 @@
+/* src/styles/CalendarView.css */
+
+/* Container styling */
+.calendar-view-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px;
+    text-align: center;
+    color: #f4f4f4;
+    margin-top: 20px;
+}
+
+.calendar-view-container h2 {
+    font-size: 2.5rem;
+    color: #FFA500;
+    margin-bottom: 20px;
+    text-shadow: 0px 4px 10px rgba(255, 165, 0, 0.2);
+}
+
+/* React Calendar styling */
+.react-calendar {
+    border: none;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 800px;
+    background-color: rgba(44, 44, 44, 0.6);
+    /* 60% opacity for background transparency */
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+    color: #f4f4f4;
+    font-family: Arial, sans-serif;
+}
+
+/* Calendar header styling */
+.react-calendar__navigation {
+    background-color: rgba(58, 58, 58, 0.6);
+    /* 60% opacity for navigation transparency */
+    color: #f4f4f4;
+    padding: 15px;
+    border-radius: 12px 12px 0 0;
+}
+
+.react-calendar__navigation button {
+    font-size: 1.2rem;
+    color: #FFA500;
+    font-weight: bold;
+}
+
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+    background-color: #FFA500;
+    color: #2c2c2c;
+    border-radius: 6px;
+}
+
+/* Day and tile styling */
+.react-calendar__tile {
+    padding: 20px 10px;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    color: #f4f4f4;
+}
+
+/* Active date styling */
+.react-calendar__tile--active {
+    background: rgba(255, 69, 0, 0.8);
+    color: #f4f4f4;
+    font-weight: bold;
+    box-shadow: 0px 4px 10px rgba(255, 165, 0, 0.5);
+    border-radius: 8px;
+}
+
+/* Current date styling */
+.react-calendar__tile--now {
+    background: rgba(255, 69, 0, 0.8);
+    color: #f4f4f4;
+    font-weight: bold;
+    border-radius: 8px;
+}
+
+/* Hover and focus effects */
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+}
+
+/* Styling for the cigarette count text in yellow */
+.tile-content {
+    font-size: 0.9rem;
+    color: #FFD700;
+    /* Yellow color for "cigarettes" text */
+    margin-top: 5px;
+    font-weight: bold;
+}

@@ -1,0 +1,48 @@
+/* src/styles/Stats.css */
+
+.stats-dashboard {
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.stats-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.stats-section {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    flex: 1;
+    min-width: 250px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.highlight {
+    color: #FFA500;
+    font-weight: bold;
+}
+
+.chart-container {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.chart-scroll-container {
+    overflow-x: auto;
+    padding: 10px;
+    max-width: 100%;
+}
+
+.chart-scroll-container canvas {
+    min-width: 600px;
+    /* Sets minimum width for horizontal scrolling on small screens */
+}

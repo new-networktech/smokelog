@@ -1,0 +1,13 @@
+/* src/styles/Header.css */
+.app-header {
+    background-color: var(--gray-color);
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.app-header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--font-color);
+}

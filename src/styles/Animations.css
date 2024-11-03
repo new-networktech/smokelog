@@ -1,0 +1,155 @@
+/* src/styles/Animations.css */
+
+.animated-shapes {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    /* Prevents shapes from interfering with clicks */
+    overflow: hidden;
+    z-index: -1;
+    /* Places shapes behind other content */
+}
+
+/* General shape styling */
+.shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.2;
+    animation: floatAnimation 10s infinite ease-in-out;
+}
+
+/* Different sizes, positions, and colors for each shape */
+.shape-1 {
+    width: 200px;
+    height: 200px;
+    background-color: rgba(255, 99, 71, 0.4);
+    /* Tomato red */
+    top: 15%;
+    left: 10%;
+    animation: sizeAnimation 6s infinite alternate ease-in-out;
+}
+
+.shape-2 {
+    width: 180px;
+    height: 180px;
+    background-color: rgba(255, 255, 0, 0.3);
+    /* Yellow */
+    top: 25%;
+    left: 60%;
+    animation: sizeAnimation 7s infinite alternate ease-in-out;
+}
+
+.shape-3 {
+    width: 150px;
+    height: 150px;
+    background-color: rgba(173, 216, 230, 0.3);
+    /* Light blue */
+    top: 65%;
+    left: 20%;
+    animation: sizeAnimation 5s infinite alternate ease-in-out;
+}
+
+.shape-4 {
+    width: 160px;
+    height: 160px;
+    background-color: rgba(255, 105, 180, 0.3);
+    /* Pink */
+    top: 40%;
+    left: 80%;
+    animation: sizeAnimation 6s infinite alternate ease-in-out;
+}
+
+.shape-5 {
+    width: 100px;
+    height: 100px;
+    background-color: rgba(0, 255, 255, 0.3);
+    /* Cyan */
+    top: 85%;
+    left: 50%;
+}
+
+.shape-6 {
+    width: 140px;
+    height: 140px;
+    background-color: rgba(0, 128, 0, 0.3);
+    /* Green */
+    top: 20%;
+    left: 30%;
+    animation: sizeAnimation 7s infinite alternate ease-in-out;
+}
+
+.shape-7 {
+    width: 130px;
+    height: 130px;
+    background-color: rgba(138, 43, 226, 0.3);
+    /* Blue Violet */
+    top: 75%;
+    left: 70%;
+    animation: sizeAnimation 8s infinite alternate ease-in-out;
+}
+
+.shape-8 {
+    width: 110px;
+    height: 110px;
+    background-color: rgba(255, 140, 0, 0.3);
+    /* Dark Orange */
+    top: 55%;
+    left: 15%;
+    animation: sizeAnimation 9s infinite alternate ease-in-out;
+}
+
+.shape-9 {
+    width: 90px;
+    height: 90px;
+    background-color: rgba(123, 104, 238, 0.3);
+    /* Medium Slate Blue */
+    top: 35%;
+    left: 40%;
+}
+
+.shape-10 {
+    width: 100px;
+    height: 100px;
+    background-color: rgba(75, 0, 130, 0.3);
+    /* Indigo */
+    top: 10%;
+    left: 75%;
+    animation: sizeAnimation 10s infinite alternate ease-in-out;
+}
+
+/* Floating animation for smooth movement */
+@keyframes floatAnimation {
+    0% {
+        transform: translateY(0) translateX(0);
+    }
+
+    25% {
+        transform: translateY(-20px) translateX(15px);
+    }
+
+    50% {
+        transform: translateY(-40px) translateX(-15px);
+    }
+
+    75% {
+        transform: translateY(-20px) translateX(15px);
+    }
+
+    100% {
+        transform: translateY(0) translateX(0);
+    }
+}
+
+/* Pulsing animation for size changes */
+@keyframes sizeAnimation {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.3);
+    }
+}
