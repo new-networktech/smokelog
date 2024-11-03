@@ -5,12 +5,10 @@ import '../styles/CalendarView.css';
 import { getLogs } from '../utils/storage';
 
 function CalendarView() {
-  const [logs, setLogs] = useState([]);
   const [eventsByDate, setEventsByDate] = useState({});
 
   useEffect(() => {
     const logs = getLogs();
-    setLogs(logs);
 
     // Group logs by date
     const events = logs.reduce((acc, log) => {

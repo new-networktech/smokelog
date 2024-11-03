@@ -1,4 +1,3 @@
-// src/pages/Stats.js
 import React, { useEffect, useState, useMemo } from 'react';
 import { Bar } from 'react-chartjs-2';
 import {
@@ -31,7 +30,7 @@ function Stats() {
   const [weeklyAverage, setWeeklyAverage] = useState(0);
   const [monthlyAverage, setMonthlyAverage] = useState(0);
   const [goal, setGoal] = useState({ daily: 0, weekly: 0 });
-  const [isLoading, setIsLoading] = useState(true);
+  const [isChartVisible, setIsChartVisible] = useState(false);  // Lazy load chart
 
   useEffect(() => {
     const fetchData = () => {
@@ -43,11 +42,13 @@ function Stats() {
       setWeeklyAverage(calculateAverage('week') || 0);
       setMonthlyAverage(calculateAverage('month') || 0);
       setGoal(getGoal() || { daily: 0, weekly: 0 });
-      setIsLoading(false);
     };
 
-    const timeoutId = setTimeout(fetchData, 300); // Debounce with 300ms delay
-    return () => clearTimeout(timeoutId);
+    fetchData();
+
+    // Delay the chart render to improve performance on mobile devices
+    const chartTimeout = setTimeout(() => setIsChartVisible(true), 500);
+    return () => clearTimeout(chartTimeout);
   }, []);
 
   const barData = useMemo(() => ({
@@ -111,15 +112,15 @@ function Stats() {
         </div>
       </div>
 
-      {isLoading ? (
-        <p>Loading data...</p>
-      ) : (
+      {isChartVisible ? (
         <div className="chart-container">
           <h3>Daily, Weekly, Monthly Totals</h3>
           <div className="chart-scroll-container">
             <Bar data={barData} options={barOptions} />
           </div>
         </div>
+      ) : (
+        <p>Loading chart data...</p>
       )}
     </div>
   );
