@@ -1,8 +1,39 @@
-// src/utils/storage.js
-
 const LOGS_KEY = 'smokeLogs';
 const GOAL_KEY = 'smokeGoal';
-const PRICE_KEY = 'smokePrice';  // for tracking financial savings
+const PRICE_KEY = 'smokePrice';
+
+// In-memory fallback in case localStorage is unavailable
+const inMemoryStorage = {};
+
+/**
+ * Check if localStorage is available, falling back to in-memory storage if not.
+ */
+function safeSetItem(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (error) {
+    console.warn(`localStorage unavailable, using in-memory storage for key "${key}"`);
+    inMemoryStorage[key] = JSON.stringify(value);
+  }
+}
+
+function safeGetItem(key) {
+  try {
+    return JSON.parse(localStorage.getItem(key));
+  } catch (error) {
+    console.warn(`localStorage unavailable, using in-memory storage for key "${key}"`);
+    return inMemoryStorage[key] ? JSON.parse(inMemoryStorage[key]) : null;
+  }
+}
+
+function safeRemoveItem(key) {
+  try {
+    localStorage.removeItem(key);
+  } catch (error) {
+    console.warn(`localStorage unavailable, clearing in-memory storage for key "${key}"`);
+    delete inMemoryStorage[key];
+  }
+}
 
 /**
  * Saves a new smoking log entry with quantity and timestamp.
@@ -11,23 +42,22 @@ const PRICE_KEY = 'smokePrice';  // for tracking financial savings
 export function saveLog(log) {
   const logs = getLogs();
   logs.push(log);
-  localStorage.setItem(LOGS_KEY, JSON.stringify(logs));
+  safeSetItem(LOGS_KEY, logs);
 }
 
 /**
- * Retrieves all smoking logs from local storage.
+ * Retrieves all smoking logs from storage.
  * @returns {Array} Array of log entries.
  */
 export function getLogs() {
-  const logs = localStorage.getItem(LOGS_KEY);
-  return logs ? JSON.parse(logs) : [];
+  return safeGetItem(LOGS_KEY) || [];
 }
 
 /**
- * Clears all smoking logs from local storage.
+ * Clears all smoking logs from storage.
  */
 export function clearLogs() {
-  localStorage.removeItem(LOGS_KEY);
+  safeRemoveItem(LOGS_KEY);
 }
 
 /**
@@ -35,16 +65,15 @@ export function clearLogs() {
  * @param {Object} goal - An object containing daily and/or weekly goals.
  */
 export function setGoal(goal) {
-  localStorage.setItem(GOAL_KEY, JSON.stringify(goal));
+  safeSetItem(GOAL_KEY, goal);
 }
 
 /**
- * Retrieves the goal from local storage.
+ * Retrieves the goal from storage.
  * @returns {Object} The goal object or an empty object if no goal is set.
  */
 export function getGoal() {
-  const goal = localStorage.getItem(GOAL_KEY);
-  return goal ? JSON.parse(goal) : {};
+  return safeGetItem(GOAL_KEY) || {};
 }
 
 /**
@@ -52,15 +81,15 @@ export function getGoal() {
  * @param {number} price - The price of a cigarette pack.
  */
 export function setPrice(price) {
-  localStorage.setItem(PRICE_KEY, price);
+  safeSetItem(PRICE_KEY, price);
 }
 
 /**
- * Retrieves the pack price from local storage.
+ * Retrieves the pack price from storage.
  * @returns {number} The pack price or 0 if no price is set.
  */
 export function getPrice() {
-  return parseFloat(localStorage.getItem(PRICE_KEY)) || 0;
+  return parseFloat(safeGetItem(PRICE_KEY)) || 0;
 }
 
 /**
@@ -144,11 +173,13 @@ export function getSmokeFreeStreak() {
 
   return streak;
 }
+
 export function calculateAverage(period) {
   const total = getTotalForPeriod(period);
   const days = period === 'week' ? 7 : 30; // 7 for week, 30 for month
   return (total / days).toFixed(2);
 }
+
 export function getWeeklyComparison() {
   const logs = getLogs();
   const currentWeekTotal = getTotalForPeriod('week');
@@ -158,10 +189,7 @@ export function getWeeklyComparison() {
   const previousWeekTotal = logs
     .filter(log => {
       const logDate = new Date(log.timestamp);
-      return (
-        logDate > previousWeekDate &&
-        logDate <= new Date()
-      );
+      return logDate > previousWeekDate && logDate <= new Date();
     })
     .reduce((total, log) => total + log.quantity, 0);
 
