@@ -1,3 +1,4 @@
+//smoke-monitoring-app\src\pages\Home.js
 import React, { useEffect, useState } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import {
@@ -80,7 +81,7 @@ function Home() {
 
   return (
     <div className="fade-in home-container">
-      <h1>Your Smoking Log</h1>
+      <h1 className="page-header">Your Smoking Log</h1>
 
       <p className="last-smoke-message">{lastSmokeMessage}</p> {/* Display last smoke message */}
 
