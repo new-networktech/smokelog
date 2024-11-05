@@ -1,13 +1,40 @@
 /* src/styles/Header.css */
+
 .app-header {
-    background-color: var(--gray-color);
-    padding: 15px;
+    background: linear-gradient(135deg, #333333, #222222);
+    padding: 20px;
     text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: all 0.3s ease;
 }
 
 .app-header h1 {
     margin: 0;
-    font-size: 1.5rem;
-    color: var(--font-color);
+    font-size: 1.8rem;
+    color: #FFA500;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: bold;
+    cursor: pointer;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.app-header h1:hover {
+    color: #FFD700;
+    text-shadow: 0 4px 8px rgba(255, 215, 0, 0.3);
+}
+
+.app-header::after {
+    content: '';
+    display: block;
+    width: 80%;
+    height: 2px;
+    margin: 10px auto 0;
+    background: linear-gradient(90deg, #FFA500, #FFD700);
+    box-shadow: 0 4px 10px rgba(255, 165, 0, 0.4);
+    border-radius: 2px;
 }
