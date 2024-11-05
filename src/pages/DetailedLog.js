@@ -1,12 +1,13 @@
 // src/pages/DetailedLog.js
 import React from 'react';
 import { getLogs } from '../utils/storage';
+import '../styles/DetailedLog.css';
 
 function DetailedLog() {
   const logs = getLogs();
 
   return (
-    <div className="detailed-log">
+    <div className="detailed-log-container">
       <h2>Detailed Smoking Log</h2>
       <table>
         <thead>

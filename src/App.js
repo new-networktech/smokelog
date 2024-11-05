@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import Stats from './pages/Stats';
 import CalendarView from './pages/CalendarView';
@@ -7,20 +7,22 @@ import DetailedLog from './pages/DetailedLog';
 import ErrorBoundary from './components/ErrorBoundary';
 import AnimatedShape from './components/AnimatedShape'; 
 import './styles/App.css';
+import './styles/Responsive.css';
 
 function App() {
+  const [isClientReady, setIsClientReady] = useState(false);
+
+  useEffect(() => {
+    setIsClientReady(true);
+  }, []);
+
+  if (!isClientReady) return <div>Loading...</div>;
+
   return (
     <Router>
       <div className="App">
-        <AnimatedShape /> {/* Keep any other background shapes as needed */}
-
-        <nav>
-          <Link to="/">Home</Link>
-          <Link to="/stats">Stats</Link>
-          <Link to="/calendar">Calendar</Link>
-          <Link to="/detailed-log">Detailed Log</Link>
-        </nav>
-
+        <AnimatedShape />
+        <NavBar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/calendar" element={<CalendarView />} />
@@ -36,6 +38,32 @@ function App() {
         </Routes>
       </div>
     </Router>
+  );
+}
+
+function NavBar() {
+  const location = useLocation();
+  const navLinks = [
+    { path: "/", label: "Home" },
+    { path: "/stats", label: "Stats" },
+    { path: "/calendar", label: "Calendar" },
+    { path: "/detailed-log", label: "Detailed Log" },
+  ];
+
+  return (
+    <nav className="navbar">
+      <div className="navbar-links">
+        {navLinks.map((link) => (
+          <Link
+            key={link.path}
+            to={link.path}
+            className={location.pathname === link.path ? "active" : ""}
+          >
+            {link.label}
+          </Link>
+        ))}
+      </div>
+    </nav>
   );
 }
 

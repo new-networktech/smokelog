@@ -31,13 +31,15 @@ function CalendarView() {
 
   return (
     <div className="calendar-view-container">
-      <h2>Smoking Events Calendar</h2>
-      <Calendar
-        tileContent={tileContent}
-        onClickDay={(date) =>
-          alert(`Cigarettes smoked on ${date.toLocaleDateString()}: ${eventsByDate[date.toLocaleDateString()] || 0}`)
-        }
-      />
+      <div className="calendar-wrapper">
+        <h2>Smoking Events Calendar</h2>
+        <Calendar
+          tileContent={tileContent}
+          onClickDay={(date) =>
+            alert(`Cigarettes smoked on ${date.toLocaleDateString()}: ${eventsByDate[date.toLocaleDateString()] || 0}`)
+          }
+        />
+      </div>
     </div>
   );
 }

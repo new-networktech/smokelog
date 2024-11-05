@@ -87,3 +87,11 @@ nav a:hover {
     font-size: 16px;
   }
 }
+
+nav a.active {
+  background-color: var(--highlight-yellow);
+  /* Adjust to your theme */
+  color: var(--background-color);
+  /* Adjust to your theme */
+  font-weight: bold;
+}

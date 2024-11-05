@@ -1,0 +1,235 @@
+/* General styles for navbar */
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Center vertically */
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    width: 100%;
+    overflow: hidden;
+    /* Prevents elements from overflowing */
+}
+
+.navbar-links a {
+    color: #f4f4f4;
+    text-decoration: none;
+    margin: 0 5px;
+    /* Slightly reduce margins */
+    padding: 8px 10px;
+    /* Smaller padding for mobile */
+    transition: color 0.3s ease, background-color 0.3s ease;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 14px;
+    /* Slightly smaller font to fit better */
+}
+
+.navbar-links a.active,
+.navbar-links a:hover {
+    background-color: rgba(255, 165, 0, 0.8);
+    color: #181818;
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 768px) {
+    .navbar-links {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+    }
+
+    /* Centering elements on Stats page for mobile */
+    .stats-dashboard {
+        padding: 20px;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    /* Make grid layout single-column and center content */
+    .stats-grid {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0px;
+        width: 80%;
+    }
+
+    .stats-section {
+        padding: 15px;
+        margin-bottom: 10px;
+        background-color: rgba(73, 71, 71, 0.5);
+        border-radius: 8px;
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+    }
+
+    /* Adjust the chart to fit the mobile screen */
+    .chart-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    .chart-scroll-container {
+        width: 100%;
+        /* Full width for mobile */
+        max-width: 300px;
+        /* Limit to fit well on small screens */
+        overflow-x: auto;
+        /* Allow scrolling if content overflows */
+        padding-bottom: 15px;
+        /* Add padding to prevent clipping */
+    }
+
+    /* Text "Daily, Weekly, Monthly Totals" centered and responsive */
+    .chart-container h3 {
+        font-size: 16px;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+}
+
+/* Tablet adjustments */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .navbar-links {
+        justify-content: center;
+        gap: 5px;
+    }
+
+    .navbar-links a {
+        font-size: 16px;
+        padding: 8px 12px;
+    }
+
+    .stats-section {
+        font-size: 18px;
+        padding: 20px;
+    }
+}
+
+/* Desktop adjustments */
+@media (min-width: 1025px) {
+    .navbar-links a {
+        font-size: 18px;
+    }
+}
+
+/* For Calender */
+
+/* Calendar styling for mobile devices */
+@media (max-width: 768px) {
+    .calendar-container {
+        width: 90%;
+        /* Full width for mobile */
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 10px;
+        background-color: rgba(0, 0, 0, 0.7);
+        border-radius: 8px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .react-calendar {
+        width: 100%;
+        border: none;
+        background: transparent;
+        color: #f4f4f4;
+    }
+
+    .react-calendar__navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px;
+    }
+
+    .react-calendar__navigation button {
+        color: #FFA500;
+        font-size: 15px;
+        background: none;
+        border: none;
+        font-weight: bold;
+        cursor: pointer;
+        padding: 5px 10px;
+    }
+
+    .react-calendar__month-view__weekdays {
+        font-size: 12px;
+        color: #f4f4f4;
+        text-transform: uppercase;
+    }
+
+    .react-calendar__tile {
+        font-size: 14px;
+        padding: 8px;
+        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.1);
+        transition: background 0.3s;
+    }
+
+    .react-calendar__tile--active {
+        background: #FF4500;
+        color: #fff;
+    }
+
+        .react-calendar__tile--now {
+            background: rgba(175, 161, 77, 0.5);
+            /* Gold color with 50% opacity */
+            color: #000;
+            /* Text color remains solid for readability */
+        }
+    /* Event text adjustments */
+    .react-calendar__tile p {
+        font-size: 12px;
+        color: #FFA500;
+        margin-top: 5px;
+    }
+
+    /* Smaller font for the calendar title */
+    h2 {
+        font-size: 20px;
+        margin-bottom: 15px;
+        color: #FFA500;
+    }
+}
+
+/* Tablet-specific calendar adjustments */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .calendar-container {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .react-calendar__tile {
+        padding: 15px;
+        font-size: 14px;
+    }
+
+    h2 {
+        font-size: 28px;
+    }
+}
+
+/* Desktop-specific calendar adjustments */
+@media (min-width: 1025px) {
+    .calendar-container {
+        width: 60%;
+    }
+
+    .react-calendar__tile {
+        padding: 15px;
+        font-size: 16px;
+    }
+
+    h2 {
+        font-size: 32px;
+    }
+}

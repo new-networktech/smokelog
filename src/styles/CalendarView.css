@@ -5,16 +5,16 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 40px;
+    padding: 20px;
     text-align: center;
     color: #f4f4f4;
     margin-top: 20px;
 }
 
 .calendar-view-container h2 {
-    font-size: 2.5rem;
+    font-size: 2rem;
     color: #FFA500;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     text-shadow: 0px 4px 10px rgba(255, 165, 0, 0.2);
 }
 
@@ -23,59 +23,61 @@
     border: none;
     border-radius: 12px;
     width: 100%;
-    max-width: 800px;
-    background-color: rgba(44, 44, 44, 0.6);
-    /* 60% opacity for background transparency */
+    max-width: 700px;
+    background-color: rgba(44, 44, 44, 0.6); /* Semi-transparent dark background */
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
     color: #f4f4f4;
     font-family: Arial, sans-serif;
+    margin: 0 auto;
 }
 
 /* Calendar header styling */
 .react-calendar__navigation {
     background-color: rgba(58, 58, 58, 0.6);
-    /* 60% opacity for navigation transparency */
     color: #f4f4f4;
-    padding: 15px;
+    padding: 12px;
     border-radius: 12px 12px 0 0;
+    display: flex;
+    justify-content: space-between;
 }
 
 .react-calendar__navigation button {
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: #FFA500;
     font-weight: bold;
+    padding: 5px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
 }
 
 .react-calendar__navigation button:enabled:hover,
 .react-calendar__navigation button:enabled:focus {
     background-color: #FFA500;
     color: #2c2c2c;
-    border-radius: 6px;
 }
 
 /* Day and tile styling */
 .react-calendar__tile {
-    padding: 20px 10px;
-    font-size: 1.1rem;
+    padding: 15px 10px;
+    font-size: 1rem;
     border-radius: 8px;
     color: #f4f4f4;
+    transition: background-color 0.2s ease;
 }
 
 /* Active date styling */
 .react-calendar__tile--active {
-    background: rgba(255, 69, 0, 0.8);
+    background: rgba(255, 69, 0, 0.8); /* Semi-transparent red */
     color: #f4f4f4;
     font-weight: bold;
-    box-shadow: 0px 4px 10px rgba(255, 165, 0, 0.5);
-    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(255, 69, 0, 0.5);
 }
 
 /* Current date styling */
 .react-calendar__tile--now {
-    background: rgba(255, 69, 0, 0.8);
+    background: rgba(255, 215, 0, 0.3); /* Semi-transparent yellow */
     color: #f4f4f4;
     font-weight: bold;
-    border-radius: 8px;
 }
 
 /* Hover and focus effects */
@@ -87,9 +89,54 @@
 
 /* Styling for the cigarette count text in yellow */
 .tile-content {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: #FFD700;
-    /* Yellow color for "cigarettes" text */
-    margin-top: 5px;
     font-weight: bold;
+    margin-top: 5px;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 768px) {
+    .calendar-view-container {
+        padding: 10px;
+    }
+
+    .calendar-view-container h2 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+
+    .react-calendar {
+        max-width: 100%;
+        font-size: 14px;
+    }
+
+    .react-calendar__tile {
+        padding: 12px 5px;
+        font-size: 0.9rem;
+    }
+
+    .react-calendar__navigation button {
+        font-size: 0.9rem;
+        padding: 4px;
+    }
+}
+
+/* Tablet adjustments */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .calendar-view-container h2 {
+        font-size: 1.8rem;
+    }
+
+    .react-calendar {
+        max-width: 90%;
+    }
+
+    .react-calendar__tile {
+        padding: 15px;
+    }
+
+    .tile-content {
+        font-size: 0.8rem;
+    }
 }
