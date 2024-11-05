@@ -1,25 +1,6 @@
 const LOGS_KEY = 'smokeLogs';
 const GOAL_KEY = 'smokeGoal';
-const PRICE_KEY = 'smokePrice';
-const isBrowser = typeof window !== "undefined" && typeof localStorage !== "undefined";
-
-const inMemoryStorage = {};
-
-/**
- * Safe method to set an item in storage.
- */
-function safeSetItem(key, value) {
-  if (isBrowser) {
-    try {
-      localStorage.setItem(key, JSON.stringify(value));
-    } catch (error) {
-      console.warn(`localStorage unavailable, using in-memory storage for key "${key}"`);
-      inMemoryStorage[key] = JSON.stringify(value);
-    }
-  } else {
-    inMemoryStorage[key] = JSON.stringify(value);
-  }
-}
+const PRICE_KEY = 'smokePrice';  // for tracking financial savings
 
 /**
  * Safe method to retrieve an item from storage.
@@ -61,10 +42,17 @@ export function saveLog(log) {
   safeSetItem(LOGS_KEY, logs);
 }
 
+/**
+ * Retrieves all smoking logs from local storage.
+ * @returns {Array} Array of log entries.
+ */
 export function getLogs() {
   return safeGetItem(LOGS_KEY) || [];
 }
 
+/**
+ * Clears all smoking logs from local storage.
+ */
 export function clearLogs() {
   safeRemoveItem(LOGS_KEY);
 }
@@ -73,6 +61,10 @@ export function setGoal(goal) {
   safeSetItem(GOAL_KEY, goal);
 }
 
+/**
+ * Retrieves the goal from local storage.
+ * @returns {Object} The goal object or an empty object if no goal is set.
+ */
 export function getGoal() {
   return safeGetItem(GOAL_KEY) || {};
 }
@@ -81,6 +73,10 @@ export function setPrice(price) {
   safeSetItem(PRICE_KEY, price);
 }
 
+/**
+ * Retrieves the pack price from local storage.
+ * @returns {number} The pack price or 0 if no price is set.
+ */
 export function getPrice() {
   return parseFloat(safeGetItem(PRICE_KEY)) || 0;
 }
@@ -169,12 +165,46 @@ export function getSmokeFreeStreak() {
 
   return streak;
 }
-
-/**
- * Calculates the average number of cigarettes smoked over a specified period.
- */
 export function calculateAverage(period) {
   const total = getTotalForPeriod(period);
   const days = period === 'week' ? 7 : 30;
   return (total / days).toFixed(2);
+}
+export function getWeeklyComparison() {
+  const logs = getLogs();
+  const currentWeekTotal = getTotalForPeriod('week');
+  const previousWeekDate = new Date();
+  previousWeekDate.setDate(previousWeekDate.getDate() - 7);
+
+  const previousWeekTotal = logs
+    .filter(log => {
+      const logDate = new Date(log.timestamp);
+      return (
+        logDate > previousWeekDate &&
+        logDate <= new Date()
+      );
+    })
+    .reduce((total, log) => total + log.quantity, 0);
+
+  return [previousWeekTotal, currentWeekTotal];
+}
+
+export function getPreviousPeriodTotal(period) {
+  const logs = getLogs();
+  const now = new Date();
+  const previousStart = new Date();
+
+  if (period === 'week') {
+    previousStart.setDate(now.getDate() - 7);
+  } else if (period === 'month') {
+    previousStart.setMonth(now.getMonth() - 1);
+  }
+
+  return logs.reduce((total, log) => {
+    const logDate = new Date(log.timestamp);
+    if (logDate >= previousStart && logDate < now) {
+      return total + log.quantity;
+    }
+    return total;
+  }, 0);
 }
