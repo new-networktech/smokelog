@@ -1,23 +1,42 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
-
-# testing
-/coverage
-
-# production
-/build
-
-# misc
+# Root-level ignores (apply to the entire project)
 .DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
+.env
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Frontend-specific ignores
+Frontend/node_modules
+Frontend/.pnp
+Frontend.pnp.js
+
+# Ignore build output from the React app in Frontend
+Frontend/build
+
+# Environment files in Frontend
+Frontend/.env
+Frontend/.env.local
+Frontend/.env.development.local
+Frontend/.env.test.local
+Frontend/.env.production.local
+
+# Coverage reports from tests in Frontend
+Frontend/coverage
+
+# Backend-specific ignores
+Backend/node_modules
+Backend/.pnp
+Backend.pnp.js
+
+# Coverage reports from tests in Backend
+Backend/coverage
+
+# Environment files in Backend
+Backend/.env
+Backend/.env.local
+Backend/.env.development.local
+Backend/.env.test.local
+Backend/.env.production.local
+
+# Misc
+**/.DS_Store  # Ignore .DS_Store files from all folders
