@@ -34,7 +34,6 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SERVER_PORT }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
           debug: true
           script: |
             cd /home/moji/smk
