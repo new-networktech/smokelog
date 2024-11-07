@@ -81,7 +81,7 @@ function Home() {
 
   return (
     <div className="fade-in home-container">
-      <h1 className="page-header">Your Smoking Log</h1>
+      <h2 className="page-header">Your Smoking Log TestCI</h2>
 
       <p className="last-smoke-message">{lastSmokeMessage}</p> {/* Display last smoke message */}
 
