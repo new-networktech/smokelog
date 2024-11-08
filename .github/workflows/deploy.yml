@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - name: SSH into server and deploy
-        uses: h1kkan/ssh-action@v2
+        uses: appleboy/ssh-action@v0.1.4
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USERNAME }}
