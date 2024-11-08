@@ -1,4 +1,3 @@
-//smoke-monitoring-app\src\pages\Home.js
 import React, { useEffect, useState } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import {
@@ -48,19 +47,23 @@ function Home() {
     }
   };
 
-  // Calculate the time since the last smoke event and update the message
+  // Updated function to calculate time since the last smoke event
   const updateLastSmokeTime = () => {
     const logs = getLogs();
     if (logs.length > 0) {
       const lastLogTime = new Date(logs[logs.length - 1].timestamp);
       const now = new Date();
-      const diffMinutes = Math.floor((now - lastLogTime) / 60000); // Convert ms to minutes
+      const diffMinutes = Math.floor((now - lastLogTime) / 60000);
 
       if (diffMinutes < 60) {
         setLastSmokeMessage(`Last smoke was ${diffMinutes} minute(s) ago.`);
-      } else {
+      } else if (diffMinutes < 1440) { // 1440 minutes in a day
         const diffHours = Math.floor(diffMinutes / 60);
-        setLastSmokeMessage(`Last smoke was ${diffHours} hour(s) ago.`);
+        const remainingMinutes = diffMinutes % 60;
+        setLastSmokeMessage(`Last smoke was ${diffHours} hour(s) and ${remainingMinutes} minute(s) ago.`);
+      } else {
+        const diffDays = Math.floor(diffMinutes / 1440); // Calculate in days
+        setLastSmokeMessage(`Last smoke was ${diffDays} day(s) ago.`);
       }
     } else {
       setLastSmokeMessage("No smoking events logged yet.");
@@ -81,7 +84,7 @@ function Home() {
 
   return (
     <div className="fade-in home-container">
-      <h2 className="page-header">Your Smoking Log Test-CI</h2>
+      <h2 className="page-header">Your Smoking Log</h2>
 
       <p className="last-smoke-message">{lastSmokeMessage}</p> {/* Display last smoke message */}
 

@@ -95,7 +95,7 @@ function Stats() {
 
   return (
     <div className="stats-dashboard">
-      <h1 className="page-header">Smoking Dashboard</h1>
+      <h2 className="page-header">Smoking Dashboard</h2>
       <p>Smoke-Free Streak: <span className="highlight">{smokeFreeStreak}</span> days</p>
 
       {/* Stats grid container */}
