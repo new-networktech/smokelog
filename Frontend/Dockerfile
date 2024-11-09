@@ -14,20 +14,21 @@ COPY . .
 # Build the React app
 RUN npm run build
 
-# Stage 2: Serve the build files with Nginx
-FROM nginx:latest
+# Stage 2: Serve the build files with Nginx (Alpine version)
+FROM nginx:alpine
 
 # Copy built files from the previous stage to the Nginx HTML directory
 COPY --from=build /app/build /usr/share/nginx/html
 
-# Copy custom Nginx configuration
+# Remove the default Nginx configuration file and add our custom one
+RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Set environment to production
 ENV NODE_ENV production
 
-# Expose port 80
+# Expose port 80 for serving the frontend
 EXPOSE 80
 
-# Start Nginx
+# Start Nginx in the foreground
 CMD ["nginx", "-g", "daemon off;"]
