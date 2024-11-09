@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import { Bar } from 'react-chartjs-2';
+// smokelog/Frontend/src/pages/Stats.js
+import React, { useEffect, useState, useMemo } from "react";
+import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -9,17 +10,20 @@ import {
   Tooltip,
   Legend,
   Filler,
-} from 'chart.js';
-import {
-  getTotalForPeriod,
-  getSmokeFreeStreak,
-  calculateAverage,
-  getGoal,
-} from '../utils/storage';
-import '../styles/Stats.css';
+} from "chart.js";
+import axios from "axios";
+import "../styles/Stats.css";
 
 // Register Chart.js components
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, Filler);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+);
 
 function Stats() {
   const [dailyTotal, setDailyTotal] = useState(0);
@@ -29,25 +33,46 @@ function Stats() {
   const [dailyAverage, setDailyAverage] = useState(0);
   const [weeklyAverage, setWeeklyAverage] = useState(0);
   const [monthlyAverage, setMonthlyAverage] = useState(0);
-  const [goal, setGoal] = useState({ daily: 0, weekly: 0 });
+  const [goal, setGoal] = useState({ daily: 10, weekly: 70 });
   const [isChartVisible, setIsChartVisible] = useState(false); // Lazy load chart
 
   // Load data on component mount
   useEffect(() => {
-  const fetchData = async () => {
-    try {
-      setDailyTotal(getTotalForPeriod('day') || 0);
-      setWeeklyTotal(getTotalForPeriod('week') || 0);
-      setMonthlyTotal(getTotalForPeriod('month') || 0);
-      setSmokeFreeStreak(getSmokeFreeStreak() || 0);
-      setDailyAverage(calculateAverage('day') || 0);
-      setWeeklyAverage(calculateAverage('week') || 0);
-      setMonthlyAverage(calculateAverage('month') || 0);
-      setGoal(getGoal() || { daily: 0, weekly: 0 });
-    } catch (error) {
-      console.error("Error fetching data in Stats.js:", error);
-    }
-  };
+    const fetchData = async () => {
+      try {
+        // Fetch daily total
+        const dailyResponse = await axios.get(
+          "http://localhost:5000/api/logs?filter=lastDay"
+        );
+        setDailyTotal(dailyResponse.data.total);
+
+        // Fetch weekly total
+        const weeklyResponse = await axios.get(
+          "http://localhost:5000/api/logs?filter=lastWeek"
+        );
+        setWeeklyTotal(weeklyResponse.data.total);
+
+        // Fetch monthly total
+        const monthlyResponse = await axios.get(
+          "http://localhost:5000/api/logs?filter=lastMonth"
+        );
+        setMonthlyTotal(monthlyResponse.data.total);
+
+        // Set averages
+        setDailyAverage((dailyResponse.data.total / 1).toFixed(2));
+        setWeeklyAverage((weeklyResponse.data.total / 7).toFixed(2));
+        setMonthlyAverage((monthlyResponse.data.total / 30).toFixed(2));
+
+        // Set smoke-free streak (this could be improved based on backend logic)
+        // Placeholder for streak calculation
+        setSmokeFreeStreak(0); // Calculate properly if needed
+
+        // Set goals (fetch from backend if applicable, here set as default)
+        setGoal({ daily: 10, weekly: 70 });
+      } catch (error) {
+        console.error("Error fetching data in Stats.js:", error);
+      }
+    };
 
     fetchData();
 
@@ -57,16 +82,21 @@ function Stats() {
   }, []);
 
   // Chart data
-  const barData = useMemo(() => ({
-    labels: ['Today', 'This Week', 'This Month (Avg)'],
-    datasets: [
-      {
-        label: 'Cigarettes Smoked',
-        data: [dailyTotal, weeklyTotal, monthlyTotal / 30].map(val => val || 0),
-        backgroundColor: ['#FFA500', '#FFD700', '#808080'],
-      },
-    ],
-  }), [dailyTotal, weeklyTotal, monthlyTotal]);
+  const barData = useMemo(
+    () => ({
+      labels: ["Today", "This Week", "This Month (Avg)"],
+      datasets: [
+        {
+          label: "Cigarettes Smoked",
+          data: [dailyTotal, weeklyTotal, monthlyTotal / 30].map(
+            (val) => val || 0
+          ),
+          backgroundColor: ["#FFA500", "#FFD700", "#808080"],
+        },
+      ],
+    }),
+    [dailyTotal, weeklyTotal, monthlyTotal]
+  );
 
   // Chart options
   const barOptions = useMemo(() => {
@@ -87,7 +117,7 @@ function Stats() {
       plugins: {
         legend: {
           display: true,
-          position: 'top',
+          position: "top",
         },
       },
     };
@@ -96,30 +126,53 @@ function Stats() {
   return (
     <div className="stats-dashboard">
       <h2 className="page-header">Smoking Dashboard</h2>
-      <p>Smoke-Free Streak: <span className="highlight">{smokeFreeStreak}</span> days</p>
+      <p>
+        Smoke-Free Streak: <span className="highlight">{smokeFreeStreak}</span>{" "}
+        days
+      </p>
 
       {/* Stats grid container */}
       <div className="stats-grid">
         {/* Averages Section */}
         <div className="stats-section averages">
           <h3>Averages</h3>
-          <p>Daily: <span className="highlight">{dailyAverage}</span> cigarettes</p>
-          <p>Weekly: <span className="highlight">{weeklyAverage}</span> cigarettes</p>
-          <p>Monthly: <span className="highlight">{monthlyAverage}</span> cigarettes</p>
+          <p>
+            Daily: <span className="highlight">{dailyAverage}</span> cigarettes
+          </p>
+          <p>
+            Weekly: <span className="highlight">{weeklyAverage}</span>{" "}
+            cigarettes
+          </p>
+          <p>
+            Monthly: <span className="highlight">{monthlyAverage}</span>{" "}
+            cigarettes
+          </p>
         </div>
 
         {/* Goals Section */}
         <div className="stats-section goals">
           <h3>Goals</h3>
-          <p>Daily Goal: <span className="highlight">{goal.daily}</span> cigarettes</p>
-          <p>Weekly Goal: <span className="highlight">{goal.weekly}</span> cigarettes</p>
+          <p>
+            Daily Goal: <span className="highlight">{goal.daily}</span>{" "}
+            cigarettes
+          </p>
+          <p>
+            Weekly Goal: <span className="highlight">{goal.weekly}</span>{" "}
+            cigarettes
+          </p>
         </div>
 
         {/* Current Usage Section */}
         <div className="stats-section comparison-insights">
           <h3>Current Usage</h3>
-          <p>This Week: <span className="highlight">{weeklyTotal}</span> cigarettes</p>
-          <p>This Month: <span className="highlight">{monthlyTotal}</span> cigarettes</p>
+          <p>
+            This Week: <span className="highlight">{weeklyTotal}</span>{" "}
+            cigarettes
+          </p>
+          <p>
+            This Month: <span className="highlight">{monthlyTotal}</span>{" "}
+            cigarettes
+          </p>
         </div>
       </div>
 
@@ -135,8 +188,7 @@ function Stats() {
         <p>Loading chart data...</p>
       )}
     </div>
-);
-
+  );
 }
 
 export default Stats;

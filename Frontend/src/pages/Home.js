@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { Doughnut } from 'react-chartjs-2';
+// smokelog/Frontend/src/pages/Home.js
+import React, { useEffect, useState, useCallback } from "react";
+import { Doughnut } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -7,62 +8,73 @@ import {
   ArcElement,
   Tooltip,
   Legend,
-} from 'chart.js';
-import { getTotalForPeriod, setGoal, getGoal, saveLog, getLogs } from '../utils/storage';
-import '../styles/Home.css';
+} from "chart.js";
+import axios from "axios";
+import "../styles/Home.css";
 
 ChartJS.register(CategoryScale, LinearScale, ArcElement, Tooltip, Legend);
 
 function Home() {
   const [dailyTotal, setDailyTotal] = useState(0);
   const [goal, setGoalState] = useState(10);
-  const [lastSmokeMessage, setLastSmokeMessage] = useState('');
+  const [lastSmokeMessage, setLastSmokeMessage] = useState("");
 
+  // Wrap fetchDailyTotal in useCallback to memoize it
+  const fetchDailyTotal = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/logs?filter=lastDay"
+      );
+      setDailyTotal(response.data.total);
+      updateLastSmokeTime(response.data.logs);
+    } catch (error) {
+      console.error("Error fetching daily total:", error);
+    }
+  }, []); // Empty dependency array, as we don't need any specific external dependencies for this function
+
+  // Fetch the daily total on component mount
   useEffect(() => {
-    setDailyTotal(getTotalForPeriod('day'));
-    setGoalState(getGoal().daily || 10);
-    updateLastSmokeTime();
-  }, []);
+    fetchDailyTotal();
+    setGoalState(10); // Default goal or fetch goal from backend if applicable
+  }, [fetchDailyTotal]);
 
-  const handleGoalChange = (e) => {
-    const newGoal = parseInt(e.target.value, 10);
-    setGoalState(newGoal);
-    setGoal({ daily: newGoal });
-  };
-
-  const handleLogEvent = () => {
-    const logEntry = { quantity: 1, timestamp: new Date().toISOString() };
-    saveLog(logEntry);
-    setDailyTotal(getTotalForPeriod('day'));
-    updateLastSmokeTime();
-  };
-
-  const handleRemoveEvent = () => {
-    const logs = getLogs();
-    if (logs.length > 0) {
-      logs.pop();
-      localStorage.setItem('smokeLogs', JSON.stringify(logs));
-      setDailyTotal(getTotalForPeriod('day'));
-      updateLastSmokeTime();
+  // Add log event
+  const handleLogEvent = async () => {
+    try {
+      await axios.post("http://localhost:5000/api/log", { quantity: 1 });
+      fetchDailyTotal(); // Refresh daily total
+    } catch (error) {
+      console.error("Error adding log entry:", error);
     }
   };
 
-  // Updated function to calculate time since the last smoke event
-  const updateLastSmokeTime = () => {
-    const logs = getLogs();
+  // Remove log event
+  const handleRemoveEvent = async () => {
+    try {
+      await axios.delete("http://localhost:5000/api/log");
+      fetchDailyTotal(); // Refresh daily total
+    } catch (error) {
+      console.error("Error removing log entry:", error);
+    }
+  };
+
+  // Update the last smoke time message
+  const updateLastSmokeTime = (logs) => {
     if (logs.length > 0) {
-      const lastLogTime = new Date(logs[logs.length - 1].timestamp);
+      const lastLogTime = new Date(logs[logs.length - 1].date);
       const now = new Date();
       const diffMinutes = Math.floor((now - lastLogTime) / 60000);
 
       if (diffMinutes < 60) {
         setLastSmokeMessage(`Last smoke was ${diffMinutes} minute(s) ago.`);
-      } else if (diffMinutes < 1440) { // 1440 minutes in a day
+      } else if (diffMinutes < 1440) {
         const diffHours = Math.floor(diffMinutes / 60);
         const remainingMinutes = diffMinutes % 60;
-        setLastSmokeMessage(`Last smoke was ${diffHours} hour(s) and ${remainingMinutes} minute(s) ago.`);
+        setLastSmokeMessage(
+          `Last smoke was ${diffHours} hour(s) and ${remainingMinutes} minute(s) ago.`
+        );
       } else {
-        const diffDays = Math.floor(diffMinutes / 1440); // Calculate in days
+        const diffDays = Math.floor(diffMinutes / 1440);
         setLastSmokeMessage(`Last smoke was ${diffDays} day(s) ago.`);
       }
     } else {
@@ -72,12 +84,15 @@ function Home() {
 
   const percentage = Math.min((dailyTotal / goal) * 100, 100);
   const chartData = {
-    labels: ['Progress', 'Remaining'],
+    labels: ["Progress", "Remaining"],
     datasets: [
       {
         data: [dailyTotal, Math.max(goal - dailyTotal, 0)],
-        backgroundColor: [percentage >= 90 ? '#FF5555' : '#FFA500', '#D3D3D3'],
-        hoverBackgroundColor: [percentage >= 90 ? '#FF8888' : '#FF8C00', '#C0C0C0'],
+        backgroundColor: [percentage >= 90 ? "#FF5555" : "#FFA500", "#D3D3D3"],
+        hoverBackgroundColor: [
+          percentage >= 90 ? "#FF8888" : "#FF8C00",
+          "#C0C0C0",
+        ],
       },
     ],
   };
@@ -86,7 +101,7 @@ function Home() {
     <div className="fade-in home-container">
       <h2 className="page-header">Your Smoking Log</h2>
 
-      <p className="last-smoke-message">{lastSmokeMessage}</p> {/* Display last smoke message */}
+      <p className="last-smoke-message">{lastSmokeMessage}</p>
 
       <div className="goal-input-container">
         <label htmlFor="dailyGoal">Set Daily Goal:</label>
@@ -95,7 +110,7 @@ function Home() {
           id="dailyGoal"
           min="1"
           value={goal}
-          onChange={handleGoalChange}
+          onChange={(e) => setGoalState(parseInt(e.target.value, 10))}
         />
       </div>
 
@@ -104,7 +119,7 @@ function Home() {
           <Doughnut
             data={chartData}
             options={{
-              cutout: '70%',
+              cutout: "70%",
               plugins: {
                 tooltip: { enabled: false },
                 legend: { display: false },

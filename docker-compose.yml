@@ -1,17 +1,61 @@
 version: '3.8'
 
 services:
+  postgres:
+    image: postgres:17-alpine  # Match the existing database version
+    container_name: smokelog-db
+    environment:
+      POSTGRES_DB: smokelog
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: smokelog-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - DB_NAME=smokelog
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_HOST=postgres
+      - DB_PORT=5432
+    depends_on:
+      postgres:
+        condition: service_healthy  # Only start when PostgreSQL is healthy
+    networks:
+      - app-network
+
   frontend:
     build:
       context: ./Frontend
       dockerfile: Dockerfile
-    container_name: smokelog-app-frontend
+    container_name: smokelog-frontend
     ports:
-      - "3001:80"
+      - "3000:80"
     environment:
       - NODE_ENV=production
+    depends_on:
+      - backend
     networks:
       - app-network
+
+volumes:
+  pgdata:
 
 networks:
   app-network:
