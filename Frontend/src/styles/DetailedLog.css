@@ -58,7 +58,7 @@ table {
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
     border-radius: 10px;
     overflow: hidden;
-    margin-top: 20px;
+    margin-top: 5px;
 }
 
 /* Header row styling */
@@ -80,11 +80,11 @@ thead tr {
 
 /* Summary box styling */
 .summary-box {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     /* Adjust the size as needed */
     color: #FFA500;
     /* Ensure the color matches your design */
-    margin-top: 20px;
+    margin-top: -20px;
     /* Add spacing if needed */
 }
 
