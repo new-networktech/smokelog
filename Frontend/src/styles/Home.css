@@ -1,11 +1,14 @@
 /* src/styles/Home.css */
 
+/* General Page Styling */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #181818;
+    /* Dark background for contrast */
     color: #f4f4f4;
+    /* Light text for visibility */
 }
 
 .home-container {
@@ -43,33 +46,69 @@ body {
 
 /* Goal Input */
 .goal-input {
-    position: absolute;
-    top: 20px;
-    right: 20px;
+    position: relative;
+    margin: 20px 0;
     font-size: 16px;
     display: flex;
     align-items: center;
-    background: rgba(255, 255, 255, 0.1);
-    padding: 8px 12px;
-    border-radius: 25px;
-    box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    /* Slight transparency to match the background */
+    padding: 12px 18px;
+    border-radius: 30px;
+    box-shadow: 0px 4px 20px rgba(255, 255, 255, 0.15);
+    /* Softer glow effect */
 }
 
 .goal-input label {
     color: #f4f4f4;
-    font-size: 16px;
-    margin-right: 10px;
+    font-size: 1.2rem;
+    /* Larger label for better readability */
+    margin-right: 15px;
+    text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.7);
+    transition: color 0.3s ease;
+    /* Transition for color when focused */
 }
 
 .goal-input input {
-    padding: 5px;
-    font-size: 16px;
-    border: 1px solid #666;
-    border-radius: 12px;
-    width: 60px;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #555;
+    /* Darker border to blend with background */
+    border-radius: 15px;
+    width: 80px;
+    /* Slightly increased width for comfort */
     text-align: center;
-    background-color: #2c2c2c;
+    background-color: rgba(44, 44, 44, 0.8);
+    /* Dark but transparent background */
     color: #f4f4f4;
+    box-shadow: 0px 2px 8px rgba(255, 255, 255, 0.1);
+    outline: none;
+    transition: background-color 0.3s, box-shadow 0.3s ease;
+    /* Smooth transition for effects */
+}
+
+/* Input Hover and Focus Styling */
+.goal-input input:hover {
+    background-color: rgba(58, 58, 58, 0.9);
+    /* Slightly lighter on hover */
+}
+
+.goal-input input:focus {
+    border-color: #FFA500;
+    /* Border turns orange when focused */
+    box-shadow: 0 0 15px rgba(255, 165, 0, 0.7);
+    /* Soft orange glow on focus */
+}
+
+.goal-input label:hover {
+    color: #FFD700;
+    /* Golden color when hovering over the label */
+}
+
+/* Modern Glow for Goal Input Section */
+.goal-input:hover {
+    box-shadow: 0px 8px 25px rgba(255, 165, 0, 0.3);
+    /* Larger glow when hovering over the entire input container */
 }
 
 /* Donut Chart */
@@ -83,11 +122,11 @@ body {
 }
 
 .donut-chart {
-    width: 180px;
-    height: 180px;
-    margin: 20px 0;
+    width: 200px;
+    height: 200px;
+    margin: 30px 0;
     position: relative;
-    filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.3));
+    filter: drop-shadow(0px 0px 20px rgba(255, 255, 255, 0.2)) drop-shadow(0px 0px 10px rgba(255, 165, 0, 0.5));
 }
 
 .chart-label {
@@ -115,50 +154,42 @@ body {
     /* Increased size */
     height: 100px;
     border-radius: 50%;
-    background-color: rgba(255, 165, 0, 0.8);
-    /* Semi-transparent orange */
+    background: linear-gradient(145deg, rgba(255, 165, 0, 0.8), rgba(255, 140, 0, 0.9));
+    /* Gradient for modern look */
     display: flex;
     align-items: center;
     justify-content: center;
     color: #fff;
-    font-size: 18px;
+    font-size: 20px;
+    /* Slightly larger for better readability */
     font-weight: bold;
     cursor: pointer;
     transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
-    /* Soft shadow */
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4);
 }
 
 .log-circle:hover {
-    transform: scale(1.2);
-    background-color: rgba(255, 140, 0, 0.9);
-    /* Darker and more opaque on hover */
-    box-shadow: 0px 10px 20px rgba(255, 165, 0, 0.4);
-    /* Slightly larger shadow on hover */
+    transform: scale(1.15);
+    box-shadow: 0px 10px 30px rgba(255, 165, 0, 0.4);
 }
 
-.add-smoke {
-    background-color: rgba(255, 165, 0, 0.8);
-}
 
-.remove-smoke {
-    background-color: rgba(255, 85, 85, 0.8);
-    /* Semi-transparent red */
-}
 
-.remove-smoke:hover {
-    background-color: rgba(255, 70, 70, 0.9);
-    /* Darker red on hover */
-}
+
+
 
 .log-circle p {
     margin: 0;
 }
 
+/* Last Smoke Message */
 .last-smoke-message {
-    margin-top: 10px;
-    font-size: 18px;
-    color: #ffa500;
-    text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.7);
+    margin-top: 15px;
+    font-size: 20px;
+    /* Slightly larger to improve readability */
+    color: #ffd700;
+    /* Golden color for better contrast */
+    text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7);
     font-weight: bold;
+    opacity: 0.9;
 }

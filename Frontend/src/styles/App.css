@@ -23,13 +23,14 @@ body {
 
 /* Navigation styling */
 nav {
-    background-color: var(--dark-gray);
+    background-color: rgba(0, 0, 0, 0.7);
+    /* More transparency */
     padding: 10px 20px;
     width: 100%;
     display: flex;
     justify-content: center;
     gap: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
 }
 
 nav a {
@@ -51,14 +52,67 @@ nav a.active {
     color: var(--background-color);
 }
 
+/* Goal Input Section */
+.goal-input {
+    margin: 20px 0;
+    padding: 15px;
+    border-radius: 30px;
+    background: rgba(44, 44, 44, 0.7);
+    /* Background transparency */
+    box-shadow: 0px 4px 15px rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: box-shadow 0.3s ease;
+}
+
+.goal-input:hover {
+    box-shadow: 0px 8px 20px rgba(255, 165, 0, 0.3);
+    /* Add glow on hover */
+}
+
+.goal-input label {
+    font-size: 1.2rem;
+    /* Slightly increased font size */
+    color: var(--font-color);
+    text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.7);
+    transition: color 0.3s ease;
+}
+
+.goal-input input {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #555;
+    /* Darker border */
+    border-radius: 15px;
+    width: 80px;
+    text-align: center;
+    background-color: rgba(58, 58, 58, 0.8);
+    /* Dark but with transparency */
+    color: #f4f4f4;
+    box-shadow: 0px 2px 8px rgba(255, 255, 255, 0.1);
+    outline: none;
+    transition: background-color 0.3s, box-shadow 0.3s ease;
+}
+
+.goal-input input:hover {
+    background-color: rgba(78, 78, 78, 0.9);
+    /* Lighten slightly on hover */
+}
+
+.goal-input input:focus {
+    border-color: #ffa500;
+    box-shadow: 0px 0px 10px rgba(255, 165, 0, 0.7);
+}
+
 /* Form styling for logging entry */
 .log-entry-form {
     margin: 20px auto;
     max-width: 300px;
     padding: 20px;
-    background-color: var(--gray-color);
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    background-color: rgba(44, 44, 44, 0.7);
+    border-radius: 15px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 /* Logs list styling */
@@ -73,8 +127,8 @@ nav a.active {
 .logs-list li {
     padding: 10px;
     margin-bottom: 5px;
-    background-color: var(--highlight-orange);
-    border-radius: 5px;
+    background-color: rgba(255, 165, 0, 0.6);
+    border-radius: 10px;
     color: var(--font-color);
     text-align: left;
 }
@@ -82,7 +136,7 @@ nav a.active {
 /* Button-like circle controls for adding/removing logs */
 .log-controls {
     display: flex;
-    gap: 15px;
+    gap: 60px;
     margin-top: 15px;
 }
 
@@ -90,38 +144,41 @@ nav a.active {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    /* Increased size */
+    height: 80px;
     border-radius: 50%;
-    background-color: var(--highlight-orange);
+    background: linear-gradient(145deg, rgba(255, 165, 0, 0.8), rgba(247, 148, 27, 0.9));
     color: var(--background-color);
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+    box-shadow: 0px 8px 20px rgba(200, 178, 178, 0.4);
 }
 
 .log-circle:hover {
-    background-color: var(--highlight-yellow);
-    transform: scale(1.1);
+    background-color: rgba(255, 140, 0, 0.9);
+    transform: scale(1.15);
+    box-shadow: 0px 10px 25px rgba(255, 165, 0, 0.4);
 }
 
 /* Center alignment for logs and goals */
 .totals,
 .goal-progress {
-    background-color: var(--gray-color);
-    border-radius: 8px;
+    background-color: rgba(44, 44, 44, 0.7);
+    border-radius: 12px;
     padding: 15px;
     margin: 20px;
     width: 80%;
     max-width: 600px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 /* Calendar container styling */
 .calendar-container {
-    background-color: var(--gray-color);
+    background-color: rgba(44, 44, 44, 0.7);
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 12px;
     margin-top: 20px;
     max-width: 600px;
     width: 100%;
@@ -137,8 +194,8 @@ nav a.active {
 .detailed-log table {
     width: 100%;
     border-collapse: collapse;
-    background-color: var(--gray-color);
-    border-radius: 8px;
+    background-color: rgba(44, 44, 44, 0.7);
+    border-radius: 12px;
     overflow: hidden;
 }
 
@@ -147,6 +204,16 @@ nav a.active {
     padding: 12px;
     border: 1px solid var(--dark-gray);
     text-align: center;
+}
+.remove-smoke {
+    background: linear-gradient(145deg, rgba(255, 102, 85, 0.8), rgba(255, 70, 70, 0.9));
+}
+.remove-smoke:hover {
+    box-shadow: 0px 10px 30px rgba(255, 70, 70, 0.4);
+}
+/* Specific styles for + Smoke and - Smoke buttons */
+.add-smoke {
+    background: linear-gradient(145deg, rgba(255, 165, 0, 0.8), rgba(255, 140, 0, 0.9));
 }
 
 .detailed-log th {
@@ -166,10 +233,8 @@ nav a.active {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    /* Prevents shapes from interfering with clicks */
     overflow: hidden;
     z-index: -1;
-    /* Places shapes behind other content */
 }
 
 /* Basic shape styling */
@@ -178,96 +243,9 @@ nav a.active {
     border-radius: 50%;
     opacity: 0.3;
     animation: floatAnimation 8s infinite ease-in-out;
-    /* Randomize animation delay to make movement less synchronized */
     animation-delay: calc(-1s * var(--i));
 }
 
-/* Different sizes, positions, and colors for each shape */
-.shape-1 {
-    width: 150px;
-    height: 150px;
-    background-color: rgba(255, 69, 0, 0.6);
-    top: 20%;
-    left: 10%;
-}
-
-.shape-2 {
-    width: 200px;
-    height: 200px;
-    background-color: rgba(255, 165, 0, 0.5);
-    top: 50%;
-    left: 70%;
-    animation: sizeAnimation 6s infinite alternate ease-in-out;
-}
-
-.shape-3 {
-    width: 180px;
-    height: 180px;
-    background-color: rgba(75, 0, 130, 0.5);
-    top: 80%;
-    left: 30%;
-}
-
-.shape-4 {
-    width: 120px;
-    height: 120px;
-    background-color: rgba(173, 216, 230, 0.6);
-    top: 15%;
-    left: 80%;
-    animation: sizeAnimation 5s infinite alternate ease-in-out;
-}
-
-.shape-5 {
-    width: 140px;
-    height: 140px;
-    background-color: rgba(255, 20, 147, 0.5);
-    top: 65%;
-    left: 20%;
-}
-
-.shape-6 {
-    width: 220px;
-    height: 220px;
-    background-color: rgba(60, 179, 113, 0.5);
-    top: 40%;
-    left: 50%;
-    animation: sizeAnimation 7s infinite alternate ease-in-out;
-}
-
-.shape-7 {
-    width: 100px;
-    height: 100px;
-    background-color: rgba(139, 69, 19, 0.6);
-    top: 75%;
-    left: 85%;
-}
-
-.shape-8 {
-    width: 160px;
-    height: 160px;
-    background-color: rgba(0, 128, 128, 0.5);
-    top: 30%;
-    left: 40%;
-}
-
-.shape-9 {
-    width: 130px;
-    height: 130px;
-    background-color: rgba(70, 130, 180, 0.4);
-    top: 55%;
-    left: 10%;
-}
-
-.shape-10 {
-    width: 180px;
-    height: 180px;
-    background-color: rgba(255, 215, 0, 0.5);
-    top: 85%;
-    left: 60%;
-    animation: sizeAnimation 6s infinite alternate ease-in-out;
-}
-
-/* Floating effect */
 @keyframes floatAnimation {
     0% {
         transform: translateY(0);
