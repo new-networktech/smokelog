@@ -13,7 +13,7 @@ import axios from "axios";
 import "../styles/Home.css";
 
 // Use the environment variable for API URL
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000"; // Fallback to localhost if not defined
+const API_URL = process.env.REACT_APP_API_URL;
 
 ChartJS.register(CategoryScale, LinearScale, ArcElement, Tooltip, Legend);
 

@@ -11,6 +11,10 @@ RUN npm install
 # Copy the rest of the project files
 COPY . .
 
+# Set environment variables if they are needed during build time
+ARG REACT_APP_API_URL
+ENV REACT_APP_API_URL=$REACT_APP_API_URL
+
 # Build the React app
 RUN npm run build
 
