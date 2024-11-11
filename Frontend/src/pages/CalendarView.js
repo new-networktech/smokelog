@@ -4,6 +4,7 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "../styles/CalendarView.css";
 import axios from "axios";
+const API_URL = process.env.REACT_APP_API_URL;
 
 function CalendarView() {
   const [eventsByDate, setEventsByDate] = useState({});
@@ -12,7 +13,7 @@ function CalendarView() {
     const fetchLogs = async () => {
       try {
         // Fetch all logs from the backend
-        const response = await axios.get("http://localhost:5000/api/logs");
+        const response = await axios.get(`${API_URL}/api/logs`);
         const logs = response.data.logs;
 
         // Group logs by date

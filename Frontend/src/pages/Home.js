@@ -11,6 +11,8 @@ import {
 } from "chart.js";
 import axios from "axios";
 import "../styles/Home.css";
+const API_URL = process.env.REACT_APP_API_URL;
+
 
 ChartJS.register(CategoryScale, LinearScale, ArcElement, Tooltip, Legend);
 
@@ -22,9 +24,7 @@ function Home() {
   // Wrap fetchDailyTotal in useCallback to memoize it
   const fetchDailyTotal = useCallback(async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5000/api/logs?filter=lastDay"
-      );
+     const response = await axios.get(`${API_URL}/api/logs?filter=lastDay`);
       setDailyTotal(response.data.total);
       updateLastSmokeTime(response.data.logs);
     } catch (error) {
@@ -41,7 +41,7 @@ function Home() {
   // Add log event
   const handleLogEvent = async () => {
     try {
-      await axios.post("http://localhost:5000/api/log", { quantity: 1 });
+      await axios.post(`${API_URL}/api/log`, { quantity: 1 });
       fetchDailyTotal(); // Refresh daily total
     } catch (error) {
       console.error("Error adding log entry:", error);
@@ -51,7 +51,7 @@ function Home() {
   // Remove log event
   const handleRemoveEvent = async () => {
     try {
-      await axios.delete("http://localhost:5000/api/log");
+      await axios.delete(`${API_URL}/api/log`);
       fetchDailyTotal(); // Refresh daily total
     } catch (error) {
       console.error("Error removing log entry:", error);
