@@ -5,14 +5,16 @@ import "react-calendar/dist/Calendar.css";
 import "../styles/CalendarView.css";
 import axios from "axios";
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 function CalendarView() {
   const [eventsByDate, setEventsByDate] = useState({});
 
   useEffect(() => {
     const fetchLogs = async () => {
       try {
-        // Fetch all logs from the backend
-        const response = await axios.get("http://localhost:5000/api/logs");
+        // Fetch all logs from the backend using API_URL environment variable
+        const response = await axios.get(`${API_URL}/api/logs`);
         const logs = response.data.logs;
 
         // Group logs by date
@@ -30,7 +32,7 @@ function CalendarView() {
     };
 
     fetchLogs();
-  }, []); // Empty dependency array ensures it runs only on mount
+  }, [API_URL]); // Add API_URL to the dependency array to handle any changes
 
   // Function to display the number of cigarettes for each day
   const tileContent = ({ date, view }) => {
