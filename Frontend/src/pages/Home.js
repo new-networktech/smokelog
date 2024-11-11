@@ -11,9 +11,8 @@ import {
 } from "chart.js";
 import axios from "axios";
 import "../styles/Home.css";
-
-// Use the environment variable for API URL
 const API_URL = process.env.REACT_APP_API_URL;
+
 
 ChartJS.register(CategoryScale, LinearScale, ArcElement, Tooltip, Legend);
 
@@ -25,21 +24,13 @@ function Home() {
   // Wrap fetchDailyTotal in useCallback to memoize it
   const fetchDailyTotal = useCallback(async () => {
     try {
-      const response = await axios.get(`${API_URL}/api/logs?filter=lastDay`);
-      if (response && response.data && Array.isArray(response.data.logs)) {
-        setDailyTotal(response.data.total || 0); // Set default total to 0 if undefined
-        updateLastSmokeTime(response.data.logs);
-      } else {
-        console.error("Unexpected response structure", response);
-        setDailyTotal(0); // Default to 0 if response structure is unexpected
-        setLastSmokeMessage("No smoking events logged yet."); // Default message
-      }
+     const response = await axios.get(`${API_URL}/api/logs?filter=lastDay`);
+      setDailyTotal(response.data.total);
+      updateLastSmokeTime(response.data.logs);
     } catch (error) {
       console.error("Error fetching daily total:", error);
-      setDailyTotal(0); // Default to 0 in case of an error
-      setLastSmokeMessage("Unable to fetch smoking events.");
     }
-  }, []);
+  }, []); // Empty dependency array, as we don't need any specific external dependencies for this function
 
   // Fetch the daily total on component mount
   useEffect(() => {
@@ -69,26 +60,25 @@ function Home() {
 
   // Update the last smoke time message
   const updateLastSmokeTime = (logs) => {
-    if (!logs || logs.length === 0) {
-      setLastSmokeMessage("No smoking events logged yet.");
-      return;
-    }
+    if (logs.length > 0) {
+      const lastLogTime = new Date(logs[logs.length - 1].date);
+      const now = new Date();
+      const diffMinutes = Math.floor((now - lastLogTime) / 60000);
 
-    const lastLogTime = new Date(logs[logs.length - 1].date);
-    const now = new Date();
-    const diffMinutes = Math.floor((now - lastLogTime) / 60000);
-
-    if (diffMinutes < 60) {
-      setLastSmokeMessage(`Last smoke was ${diffMinutes} minute(s) ago.`);
-    } else if (diffMinutes < 1440) {
-      const diffHours = Math.floor(diffMinutes / 60);
-      const remainingMinutes = diffMinutes % 60;
-      setLastSmokeMessage(
-        `Last smoke was ${diffHours} hour(s) and ${remainingMinutes} minute(s) ago.`
-      );
+      if (diffMinutes < 60) {
+        setLastSmokeMessage(`Last smoke was ${diffMinutes} minute(s) ago.`);
+      } else if (diffMinutes < 1440) {
+        const diffHours = Math.floor(diffMinutes / 60);
+        const remainingMinutes = diffMinutes % 60;
+        setLastSmokeMessage(
+          `Last smoke was ${diffHours} hour(s) and ${remainingMinutes} minute(s) ago.`
+        );
+      } else {
+        const diffDays = Math.floor(diffMinutes / 1440);
+        setLastSmokeMessage(`Last smoke was ${diffDays} day(s) ago.`);
+      }
     } else {
-      const diffDays = Math.floor(diffMinutes / 1440);
-      setLastSmokeMessage(`Last smoke was ${diffDays} day(s) ago.`);
+      setLastSmokeMessage("No smoking events logged yet.");
     }
   };
 
