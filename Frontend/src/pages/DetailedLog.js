@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../styles/DetailedLog.css";
-const API_URL = process.env.REACT_APP_API_URL;
 
 function DetailedLog() {
   const [logs, setLogs] = useState([]);
@@ -14,7 +13,7 @@ function DetailedLog() {
     const fetchLogs = async () => {
       try {
         const response = await axios.get(
-          `${API_URL}/api/logs?filter=${timeFilter}`
+          `http://localhost:5000/api/logs?filter=${timeFilter}`
         );
         setLogs(response.data.logs);
         setSummary(response.data.total);

@@ -13,8 +13,6 @@ import {
 } from "chart.js";
 import axios from "axios";
 import "../styles/Stats.css";
-const API_URL = process.env.REACT_APP_API_URL;
-
 
 // Register Chart.js components
 ChartJS.register(
@@ -44,19 +42,19 @@ function Stats() {
       try {
         // Fetch daily total
         const dailyResponse = await axios.get(
-          `${API_URL}/api/logs?filter=lastDay`
+          "http://localhost:5000/api/logs?filter=lastDay"
         );
         setDailyTotal(dailyResponse.data.total);
-        
+
         // Fetch weekly total
         const weeklyResponse = await axios.get(
-          `${API_URL}/api/logs?filter=lastWeek`
+          "http://localhost:5000/api/logs?filter=lastWeek"
         );
         setWeeklyTotal(weeklyResponse.data.total);
 
         // Fetch monthly total
         const monthlyResponse = await axios.get(
-          `${API_URL}/api/logs?filter=lastMonth`
+          "http://localhost:5000/api/logs?filter=lastMonth"
         );
         setMonthlyTotal(monthlyResponse.data.total);
 
