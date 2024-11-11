@@ -13,7 +13,7 @@ import axios from "axios";
 import "../styles/Home.css";
 
 // Use the environment variable for API URL
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000"; // Fallback to localhost if not defined
 
 ChartJS.register(CategoryScale, LinearScale, ArcElement, Tooltip, Legend);
 
@@ -24,6 +24,7 @@ function Home() {
 
   // Wrap fetchDailyTotal in useCallback to memoize it
   const fetchDailyTotal = useCallback(async () => {
+    console.log("API_URL:", API_URL); // Check if the API URL is defined correctly
     try {
       const response = await axios.get(`${API_URL}/api/logs?filter=lastDay`);
       if (response && response.data && Array.isArray(response.data.logs)) {
@@ -39,7 +40,7 @@ function Home() {
       setDailyTotal(0); // Default to 0 in case of an error
       setLastSmokeMessage("Unable to fetch smoking events.");
     }
-  }, []);
+  }, [API_URL]);
 
   // Fetch the daily total on component mount
   useEffect(() => {
