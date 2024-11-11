@@ -14,6 +14,8 @@ import {
 import axios from "axios";
 import "../styles/Stats.css";
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 // Register Chart.js components
 ChartJS.register(
   CategoryScale,
@@ -42,19 +44,19 @@ function Stats() {
       try {
         // Fetch daily total
         const dailyResponse = await axios.get(
-          "http://localhost:5000/api/logs?filter=lastDay"
+          `${API_URL}/api/logs?filter=lastDay`
         );
         setDailyTotal(dailyResponse.data.total);
 
         // Fetch weekly total
         const weeklyResponse = await axios.get(
-          "http://localhost:5000/api/logs?filter=lastWeek"
+          `${API_URL}/api/logs?filter=lastWeek`
         );
         setWeeklyTotal(weeklyResponse.data.total);
 
         // Fetch monthly total
         const monthlyResponse = await axios.get(
-          "http://localhost:5000/api/logs?filter=lastMonth"
+          `${API_URL}/api/logs?filter=lastMonth`
         );
         setMonthlyTotal(monthlyResponse.data.total);
 
@@ -79,7 +81,7 @@ function Stats() {
     // Delay the chart render to improve performance, especially on mobile devices
     const chartTimeout = setTimeout(() => setIsChartVisible(true), 500);
     return () => clearTimeout(chartTimeout);
-  }, []);
+  }, [API_URL]);
 
   // Chart data
   const barData = useMemo(
