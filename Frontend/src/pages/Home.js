@@ -11,9 +11,8 @@ import {
 } from "chart.js";
 import axios from "axios";
 import "../styles/Home.css";
-
-// Use the environment variable for API URL
 const API_URL = process.env.REACT_APP_API_URL;
+
 
 ChartJS.register(CategoryScale, LinearScale, ArcElement, Tooltip, Legend);
 
@@ -26,15 +25,9 @@ function Home() {
   const fetchDailyTotal = useCallback(async () => {
     console.log("API_URL:", API_URL); // Check if the API URL is defined correctly
     try {
-      const response = await axios.get(`${API_URL}/api/logs?filter=lastDay`);
-      if (response && response.data && Array.isArray(response.data.logs)) {
-        setDailyTotal(response.data.total || 0); // Set default total to 0 if undefined
-        updateLastSmokeTime(response.data.logs);
-      } else {
-        console.error("Unexpected response structure", response);
-        setDailyTotal(0); // Default to 0 if response structure is unexpected
-        setLastSmokeMessage("No smoking events logged yet."); // Default message
-      }
+     const response = await axios.get(`${API_URL}/api/logs?filter=lastDay`);
+      setDailyTotal(response.data.total);
+      updateLastSmokeTime(response.data.logs);
     } catch (error) {
       console.error("Error fetching daily total:", error);
       setDailyTotal(0); // Default to 0 in case of an error
@@ -51,7 +44,7 @@ function Home() {
   // Add log event
   const handleLogEvent = async () => {
     try {
-      await axios.post(`${API_URL}/api/log`, { quantity: 1 });
+      await axios.post("http://localhost:5000/api/log", { quantity: 1 });
       fetchDailyTotal(); // Refresh daily total
     } catch (error) {
       console.error("Error adding log entry:", error);
@@ -61,7 +54,7 @@ function Home() {
   // Remove log event
   const handleRemoveEvent = async () => {
     try {
-      await axios.delete(`${API_URL}/api/log`);
+      await axios.delete("http://localhost:5000/api/log");
       fetchDailyTotal(); // Refresh daily total
     } catch (error) {
       console.error("Error removing log entry:", error);
