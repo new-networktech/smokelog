@@ -4,6 +4,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const { connectDB, sequelize } = require("./config/db");
 const logRoutes = require("./routes/logRoutes");
+const authRoutes = require("./routes/auth");
 require("dotenv").config();
 
 const app = express();
@@ -15,7 +16,7 @@ app.use(bodyParser.json());
 
 // Routes
 app.use("/api", logRoutes);
-
+app.use("/api/auth", authRoutes);
 // Connect to the database and start the server
 connectDB().then(() => {
   sequelize

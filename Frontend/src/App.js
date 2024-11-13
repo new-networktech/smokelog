@@ -1,13 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
-import Home from './pages/Home';
-import Stats from './pages/Stats';
-import CalendarView from './pages/CalendarView';
-import DetailedLog from './pages/DetailedLog';
-import ErrorBoundary from './components/ErrorBoundary';
-import AnimatedShape from './components/AnimatedShape'; 
-import './styles/App.css';
-import './styles/Responsive.css';
+// smokelog/Frontend/src/App.js
+import React, { useEffect, useState } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
+import Home from "./pages/Home";
+import Stats from "./pages/Stats";
+import CalendarView from "./pages/CalendarView";
+import DetailedLog from "./pages/DetailedLog";
+import ErrorBoundary from "./components/ErrorBoundary";
+import AnimatedShape from "./components/AnimatedShape";
+import { useAuth } from "./context/AuthContext"; // Import authentication context
+import "./styles/App.css";
+import "./styles/Responsive.css";
 
 function App() {
   const [isClientReady, setIsClientReady] = useState(false);
@@ -22,18 +31,18 @@ function App() {
     <Router>
       <div className="App">
         <AnimatedShape />
-        <NavBar />
+        <NavBar /> {/* Main navigation bar component */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/calendar" element={<CalendarView />} />
           <Route path="/detailed-log" element={<DetailedLog />} />
-          <Route 
-            path="/stats" 
+          <Route
+            path="/stats"
             element={
               <ErrorBoundary>
                 <Stats />
               </ErrorBoundary>
-            } 
+            }
           />
         </Routes>
       </div>
@@ -41,7 +50,9 @@ function App() {
   );
 }
 
+// Main navigation bar component
 function NavBar() {
+  const { user, logout } = useAuth(); // Access authentication state and logout function
   const location = useLocation();
   const navLinks = [
     { path: "/", label: "Home" },
@@ -62,6 +73,21 @@ function NavBar() {
             {link.label}
           </Link>
         ))}
+        {/* Conditional links based on authentication state */}
+        {user ? (
+          <button onClick={logout} className="nav-button">
+            Logout
+          </button>
+        ) : (
+          <>
+            <Link to="/login" className="nav-button">
+              Login
+            </Link>
+            <Link to="/register" className="nav-button">
+              Register
+            </Link>
+          </>
+        )}
       </div>
     </nav>
   );

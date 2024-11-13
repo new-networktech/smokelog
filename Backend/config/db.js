@@ -1,4 +1,4 @@
-// config/db.js
+// smokelog\Backend\config\db.js
 const { Sequelize } = require("sequelize");
 require("dotenv").config();
 

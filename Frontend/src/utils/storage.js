@@ -1,3 +1,4 @@
+//smokelog\Frontend\src\utils\storage.js
 const LOGS_KEY = 'smokeLogs';
 const GOAL_KEY = 'smokeGoal';
 const PRICE_KEY = 'smokePrice';
