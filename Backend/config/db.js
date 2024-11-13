@@ -1,4 +1,4 @@
-// smokelog\Backend\config\db.js
+// Backend/config/db.js
 const { Sequelize } = require("sequelize");
 require("dotenv").config();
 
@@ -23,4 +23,5 @@ const connectDB = async () => {
   }
 };
 
-module.exports = { sequelize, connectDB };
+connectDB(); // Initiate database connection
+module.exports = sequelize; // Export sequelize instance as default export

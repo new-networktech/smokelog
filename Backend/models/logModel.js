@@ -1,6 +1,6 @@
 // models/logModel.js
 const { DataTypes } = require("sequelize");
-const { sequelize } = require("../config/db");
+const sequelize = require("../config/db");
 
 const Log = sequelize.define(
   "Log",

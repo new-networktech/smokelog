@@ -12,6 +12,8 @@ import Home from "./pages/Home";
 import Stats from "./pages/Stats";
 import CalendarView from "./pages/CalendarView";
 import DetailedLog from "./pages/DetailedLog";
+import Login from "./pages/Login"; // Import the Login component
+import Register from "./pages/Register"; // Import the Register component
 import ErrorBoundary from "./components/ErrorBoundary";
 import AnimatedShape from "./components/AnimatedShape";
 import { useAuth } from "./context/AuthContext"; // Import authentication context
@@ -36,6 +38,10 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/calendar" element={<CalendarView />} />
           <Route path="/detailed-log" element={<DetailedLog />} />
+          <Route path="/login" element={<Login />} />{" "}
+          {/* Add route for Login */}
+          <Route path="/register" element={<Register />} />{" "}
+          {/* Add route for Register */}
           <Route
             path="/stats"
             element={
