@@ -18,7 +18,7 @@ export function AuthProvider({ children }) {
   const fetchUserProfile = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/profile`
+        `${process.env.REACT_APP_API_URL}/api/auth/profile` // Corrected path
       );
       setUser(response.data);
     } catch (error) {
@@ -37,7 +37,7 @@ export function AuthProvider({ children }) {
       axios.defaults.headers.common[
         "Authorization"
       ] = `Bearer ${response.data.token}`;
-      await fetchUserProfile();
+      await fetchUserProfile(); // Fetch profile after successful login
     } catch (error) {
       console.error("Login failed:", error);
     }
@@ -46,7 +46,7 @@ export function AuthProvider({ children }) {
   const logout = () => {
     localStorage.removeItem("token");
     delete axios.defaults.headers.common["Authorization"];
-    setUser(null);
+    setUser(null); // Clear user data on logout
   };
 
   return (

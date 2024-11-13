@@ -2,7 +2,7 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const sequelize = require("./config/db"); // Only import sequelize instance
+const sequelize = require("./config/db");
 const logRoutes = require("./routes/logRoutes");
 const authRoutes = require("./routes/auth");
 require("dotenv").config();
@@ -16,12 +16,11 @@ app.use(bodyParser.json());
 
 // Routes
 app.use("/api", logRoutes);
-app.use("/api/auth", authRoutes);
+app.use("/api/auth", authRoutes); // This mounts authRoutes correctly
 
-// Synchronize database and start server
-// server.js
+// Start server after syncing DB
 sequelize
-  .sync({ force: true }) // This will drop the table and recreate it
+  .sync({ force: true })
   .then(() => {
     console.log("Tables are synchronized.");
     app.listen(PORT, () => {
@@ -31,4 +30,3 @@ sequelize
   .catch((err) => {
     console.error("Failed to synchronize database:", err);
   });
-

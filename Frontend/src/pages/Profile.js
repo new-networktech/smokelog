@@ -14,7 +14,7 @@ function Profile() {
           <p>Email: {user.email}</p>
         </div>
       ) : (
-        <p>Loading...</p>
+        <p>Loading profile data...</p>
       )}
     </div>
   );
