@@ -10,40 +10,56 @@ import {
   Legend,
 } from "chart.js";
 import axios from "axios";
+import { useAuth } from "../context/AuthContext"; // Import auth context for user token
 import "../styles/Home.css";
+
 const API_URL = process.env.REACT_APP_API_URL;
 
 ChartJS.register(CategoryScale, LinearScale, ArcElement, Tooltip, Legend);
 
 function Home() {
+  const { user } = useAuth(); // Get user from auth context
   const [dailyTotal, setDailyTotal] = useState(0);
   const [goal, setGoalState] = useState(10);
   const [lastSmokeMessage, setLastSmokeMessage] = useState("");
 
   // Wrap fetchDailyTotal in useCallback to memoize it
   const fetchDailyTotal = useCallback(async () => {
-    console.log("API_URL:", API_URL); // Check if the API URL is defined correctly
+    if (!user) return; // Ensure user is authenticated
     try {
-      const response = await axios.get(`${API_URL}/api/logs?filter=lastDay`);
+      const response = await axios.get(`${API_URL}/api/logs?filter=lastDay`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // Add token in header
+        },
+      });
       setDailyTotal(response.data.total);
       updateLastSmokeTime(response.data.logs);
     } catch (error) {
       console.error("Error fetching daily total:", error);
-      setDailyTotal(0); // Default to 0 in case of an error
+      setDailyTotal(0);
       setLastSmokeMessage("Unable to fetch smoking events.");
     }
-  }, [API_URL]);
+  }, [API_URL, user]);
 
   // Fetch the daily total on component mount
   useEffect(() => {
     fetchDailyTotal();
-    setGoalState(10); // Default goal or fetch goal from backend if applicable
+    setGoalState(10);
   }, [fetchDailyTotal]);
 
   // Add log event
   const handleLogEvent = async () => {
+    if (!user) return; // Ensure user is authenticated
     try {
-      await axios.post(`${API_URL}/api/log`, { quantity: 1 });
+      await axios.post(
+        `${API_URL}/api/log`,
+        { quantity: 1 },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // Add token in header
+          },
+        }
+      );
       fetchDailyTotal(); // Refresh daily total
     } catch (error) {
       console.error("Error adding log entry:", error);
@@ -52,8 +68,13 @@ function Home() {
 
   // Remove log event
   const handleRemoveEvent = async () => {
+    if (!user) return; // Ensure user is authenticated
     try {
-      await axios.delete(`${API_URL}/api/log`);
+      await axios.delete(`${API_URL}/api/log`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // Add token in header
+        },
+      });
       fetchDailyTotal(); // Refresh daily total
     } catch (error) {
       console.error("Error removing log entry:", error);

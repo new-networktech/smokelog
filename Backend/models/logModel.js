@@ -1,6 +1,7 @@
-// models/logModel.js
+// Path: Backend/models/logModel.js
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
+const User = require("./User");
 
 const Log = sequelize.define(
   "Log",
@@ -18,10 +19,21 @@ const Log = sequelize.define(
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
     },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: User,
+        key: "id",
+      },
+    },
   },
   {
     timestamps: false,
   }
 );
+
+User.hasMany(Log, { foreignKey: "userId" });
+Log.belongsTo(User, { foreignKey: "userId" });
 
 module.exports = Log;

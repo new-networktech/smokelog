@@ -1,3 +1,5 @@
+# Frontend Dockerfile
+
 # Stage 1: Build the React app
 FROM node:16-alpine AS build
 
