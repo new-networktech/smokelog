@@ -1,18 +1,21 @@
 // Path: Frontend/src/pages/Login.js
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null); // Error state to show login feedback
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null); // Clear previous error
+    setError(null);
     try {
       await login(email, password);
+      navigate("/");
     } catch (err) {
       setError("Login failed. Please check your credentials.");
     }

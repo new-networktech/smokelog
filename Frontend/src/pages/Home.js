@@ -1,5 +1,6 @@
-// smokelog/Frontend/src/pages/Home.js
+// Path: Frontend/src/pages/Home.js
 import React, { useEffect, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate for redirection
 import { Doughnut } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -13,7 +14,7 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext"; // Import auth context for user token
 import "../styles/Home.css";
 
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
 ChartJS.register(CategoryScale, LinearScale, ArcElement, Tooltip, Legend);
 
@@ -22,14 +23,21 @@ function Home() {
   const [dailyTotal, setDailyTotal] = useState(0);
   const [goal, setGoalState] = useState(10);
   const [lastSmokeMessage, setLastSmokeMessage] = useState("");
+  const navigate = useNavigate(); // Initialize navigation
 
-  // Wrap fetchDailyTotal in useCallback to memoize it
+  // Redirect to login if the user is not authenticated
+  useEffect(() => {
+    if (!user) {
+      navigate("/"); // Redirect to login page if not authenticated
+    }
+  }, [user, navigate]);
+
   const fetchDailyTotal = useCallback(async () => {
-    if (!user) return; // Ensure user is authenticated
+    if (!user) return;
     try {
       const response = await axios.get(`${API_URL}/api/logs?filter=lastDay`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`, // Add token in header
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
       setDailyTotal(response.data.total);
@@ -41,53 +49,48 @@ function Home() {
     }
   }, [API_URL, user]);
 
-  // Fetch the daily total on component mount
   useEffect(() => {
     fetchDailyTotal();
     setGoalState(10);
   }, [fetchDailyTotal]);
 
-  // Add log event
   const handleLogEvent = async () => {
-    if (!user) return; // Ensure user is authenticated
+    if (!user) return;
     try {
       await axios.post(
         `${API_URL}/api/log`,
         { quantity: 1 },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`, // Add token in header
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
-      fetchDailyTotal(); // Refresh daily total
+      fetchDailyTotal();
     } catch (error) {
       console.error("Error adding log entry:", error);
     }
   };
 
-  // Remove log event
   const handleRemoveEvent = async () => {
-    if (!user) return; // Ensure user is authenticated
+    if (!user) return;
     try {
       await axios.delete(`${API_URL}/api/log`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`, // Add token in header
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      fetchDailyTotal(); // Refresh daily total
+      fetchDailyTotal();
     } catch (error) {
       console.error("Error removing log entry:", error);
     }
   };
 
-  // Update the last smoke time message
   const updateLastSmokeTime = (logs) => {
     if (!logs || logs.length === 0) {
       setLastSmokeMessage("No smoking events logged yet.");
       return;
     }
-
     const lastLogTime = new Date(logs[logs.length - 1].date);
     const now = new Date();
     const diffMinutes = Math.floor((now - lastLogTime) / 60000);
@@ -123,10 +126,13 @@ function Home() {
 
   return (
     <div className="fade-in home-container">
-      <h2 className="page-header">Your Smoking Log</h2>
-
+      <header className="app-header">
+        <h2 className="welcome-message">
+          {user ? `Welcome, ${user.username}` : "Welcome, Guest"}
+        </h2>
+      </header>
+      <h2 className="page-header">Smoking Log</h2>
       <p className="last-smoke-message">{lastSmokeMessage}</p>
-
       <div className="goal-input-container">
         <label htmlFor="dailyGoal">Set Daily Goal:</label>
         <input
@@ -137,7 +143,6 @@ function Home() {
           onChange={(e) => setGoalState(parseInt(e.target.value, 10))}
         />
       </div>
-
       <div className="right-section">
         <div className="donut-chart">
           <Doughnut
@@ -152,7 +157,6 @@ function Home() {
           />
           <p className="chart-label">{Math.round(percentage)}%</p>
         </div>
-
         <div className="log-controls">
           <div className="log-circle add-smoke" onClick={handleLogEvent}>
             <p>+ Smoke</p>
