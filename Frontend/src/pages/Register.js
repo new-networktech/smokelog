@@ -1,9 +1,9 @@
 // Path: Frontend/src/pages/Register.js
 // Updated Register.js
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext"; // Import AuthContext
+import { useAuth } from "../context/AuthContext"; // Import useAuth
+import "./Register.css";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -11,7 +11,8 @@ function Register() {
     email: "",
     password: "",
   });
-  const { fetchUserProfile } = useAuth(); // Use fetchUserProfile from context
+  const [error, setError] = useState("");
+  const { register } = useAuth(); // Get register function from auth context
   const navigate = useNavigate();
 
   const handleChange = (e) =>
@@ -19,36 +20,90 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+
     try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/auth/register`,
-        formData
-      );
-
-      // Assuming the backend returns a token
-      const { token } = response.data;
-      localStorage.setItem("token", token);
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-      await fetchUserProfile(); // Fetch and set the user data
-      navigate("/"); // Redirect to the home/dashboard
+      await register(formData.username, formData.email, formData.password);
+      navigate("/login");
     } catch (error) {
-      console.error("Registration failed:", error);
+      if (error.response?.data?.error) {
+        setError(error.response.data.error);
+      } else {
+        setError("An error occurred during registration");
+      }
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input name="username" placeholder="Username" onChange={handleChange} />
-      <input name="email" placeholder="Email" onChange={handleChange} />
-      <input
-        name="password"
-        type="password"
-        placeholder="Password"
-        onChange={handleChange}
-      />
-      <button type="submit">Register</button>
-    </form>
+    <div className="register-container">
+      <div className="register-card">
+        <div className="register-welcome">
+          <h1>Welcome to SmokingLog</h1>
+          <p>
+            Track your journey to a healthier lifestyle with our comprehensive
+            smoking tracking tools.
+          </p>
+        </div>
+
+        <div className="register-form-container">
+          <div className="register-header">
+            <h2>Create Account</h2>
+            <p>Please fill in your details to register</p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="register-form">
+            <div className="form-group">
+              <label htmlFor="username">Username</label>
+              <input
+                id="username"
+                name="username"
+                type="text"
+                value={formData.username}
+                onChange={handleChange}
+                placeholder="Enter your username"
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Create a password"
+                required
+              />
+            </div>
+
+            {error && <div className="error-message">{error}</div>}
+
+            <button type="submit" className="register-button">
+              Create Account
+            </button>
+
+            <p className="login-prompt">
+              Already have an account? <a href="/login">Sign in</a>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
   );
 }
 

@@ -42,21 +42,29 @@ function Stats() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const token = localStorage.getItem("token");
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+
         // Fetch daily total
         const dailyResponse = await axios.get(
-          `${API_URL}/api/logs?filter=lastDay`
+          `${API_URL}/api/logs?filter=lastDay`,
+          { headers }
         );
         setDailyTotal(dailyResponse.data.total);
 
         // Fetch weekly total
         const weeklyResponse = await axios.get(
-          `${API_URL}/api/logs?filter=lastWeek`
+          `${API_URL}/api/logs?filter=lastWeek`,
+          { headers }
         );
         setWeeklyTotal(weeklyResponse.data.total);
 
         // Fetch monthly total
         const monthlyResponse = await axios.get(
-          `${API_URL}/api/logs?filter=lastMonth`
+          `${API_URL}/api/logs?filter=lastMonth`,
+          { headers }
         );
         setMonthlyTotal(monthlyResponse.data.total);
 
@@ -73,6 +81,10 @@ function Stats() {
         setGoal({ daily: 10, weekly: 70 });
       } catch (error) {
         console.error("Error fetching data in Stats.js:", error);
+        if (error.response?.status === 401) {
+          // Handle unauthorized error (e.g., redirect to login)
+          console.log("User not authenticated");
+        }
       }
     };
 
@@ -81,7 +93,7 @@ function Stats() {
     // Delay the chart render to improve performance, especially on mobile devices
     const chartTimeout = setTimeout(() => setIsChartVisible(true), 500);
     return () => clearTimeout(chartTimeout);
-  }, [API_URL]);
+  }, []);
 
   // Chart data
   const barData = useMemo(

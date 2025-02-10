@@ -13,8 +13,12 @@ function CalendarView() {
   useEffect(() => {
     const fetchLogs = async () => {
       try {
-        // Fetch all logs from the backend using API_URL environment variable
-        const response = await axios.get(`${API_URL}/api/logs`);
+        const token = localStorage.getItem("token");
+        const response = await axios.get(`${API_URL}/api/logs`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const logs = response.data.logs;
 
         // Group logs by date
@@ -32,7 +36,7 @@ function CalendarView() {
     };
 
     fetchLogs();
-  }, [API_URL]); // Add API_URL to the dependency array to handle any changes
+  }, []); // Remove API_URL from dependencies
 
   // Function to display the number of cigarettes for each day
   const tileContent = ({ date, view }) => {

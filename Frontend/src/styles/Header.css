@@ -1,40 +1,83 @@
 /* src/styles/Header.css */
 
-.app-header {
-    background: linear-gradient(135deg, #333333, #222222);
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+.header {
+    background: linear-gradient(to right, #1a1a1a, #2d2d2d);
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     position: sticky;
     top: 0;
     z-index: 1000;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.nav-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
     transition: all 0.3s ease;
 }
 
-.app-header h1 {
-    margin: 0;
-    font-size: 1.8rem;
-    color: #FFA500;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    font-weight: bold;
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+}
+
+.nav-link.active {
+    background-color: #ffa500;
+    color: #1a1a1a;
+}
+
+.logout-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
     cursor: pointer;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    transition: color 0.3s ease, text-shadow 0.3s ease;
+    font-weight: 500;
+    transition: all 0.3s ease;
 }
 
-.app-header h1:hover {
-    color: #FFD700;
-    text-shadow: 0 4px 8px rgba(255, 215, 0, 0.3);
+.logout-button:hover {
+    background-color: #c82333;
+    transform: translateY(-1px);
 }
 
-.app-header::after {
-    content: '';
-    display: block;
-    width: 80%;
-    height: 2px;
-    margin: 10px auto 0;
-    background: linear-gradient(90deg, #FFA500, #FFD700);
-    box-shadow: 0 4px 10px rgba(255, 165, 0, 0.4);
-    border-radius: 2px;
+.welcome-text {
+    color: #ffa500;
+    font-size: 1.1rem;
+    margin-right: 2rem;
+}
+
+@media (max-width: 768px) {
+    .nav-container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+    }
+    
+    .welcome-text {
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
 }

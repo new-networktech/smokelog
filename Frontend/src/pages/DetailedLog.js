@@ -14,8 +14,14 @@ function DetailedLog() {
   useEffect(() => {
     const fetchLogs = async () => {
       try {
+        const token = localStorage.getItem("token");
         const response = await axios.get(
-          `${API_URL}/api/logs?filter=${timeFilter}`
+          `${API_URL}/api/logs?filter=${timeFilter}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         setLogs(response.data.logs);
         setSummary(response.data.total);
@@ -24,7 +30,7 @@ function DetailedLog() {
       }
     };
     fetchLogs();
-  }, [timeFilter, API_URL]);
+  }, [timeFilter]);
 
   // Change filter handler
   const handleFilterChange = (e) => {

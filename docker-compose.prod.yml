@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  # ... other services ...
+
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile.prod
+    container_name: smokelog-frontend-prod
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+    restart: unless-stopped

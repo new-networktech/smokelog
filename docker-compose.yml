@@ -1,8 +1,8 @@
-version: '3.8'
+version: "3.8"
 
 services:
   postgres:
-    image: postgres:17-alpine  # Match the existing database version
+    image: postgres:17-alpine
     container_name: smokelog-db
     environment:
       POSTGRES_DB: smokelog
@@ -28,18 +28,23 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
       - DB_NAME=smokelog
       - DB_USER=postgres
       - DB_PASSWORD=postgres
       - DB_HOST=postgres
       - DB_PORT=5432
       - JWT_SECRET=Alki255!@#$
+    volumes:
+      - ./Backend:/app
+      - /app/node_modules
+    command: ["npm", "run", "dev"]
     depends_on:
       postgres:
-        condition: service_healthy  # Only start when PostgreSQL is healthy
+        condition: service_healthy
     networks:
       - app-network
+    restart: unless-stopped
 
   frontend:
     build:
@@ -47,14 +52,23 @@ services:
       dockerfile: Dockerfile
     container_name: smokelog-frontend
     ports:
-      - "3000:80"
+      - "3000:3000"
     environment:
-      - NODE_ENV=production
-      - REACT_APP_API_URL=http://smokelog-backend:5000
+      - NODE_ENV=development
+      - REACT_APP_API_URL=http://localhost:5000
+      - WATCHPACK_POLLING=true
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./Frontend:/app
+      - /app/node_modules
+    stdin_open: true
+    tty: true
+    command: ["npm", "start"]
     depends_on:
       - backend
     networks:
       - app-network
+    restart: unless-stopped
 
 volumes:
   pgdata:

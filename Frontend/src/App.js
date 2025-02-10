@@ -1,12 +1,11 @@
 // smokelog/Frontend/src/App.js
 import React, { useEffect, useState } from "react";
 import {
-  BrowserRouter as Router,
+  BrowserRouter,
   Routes,
   Route,
   Link,
   useLocation,
-  Navigate,
 } from "react-router-dom";
 import Home from "./pages/Home";
 import Stats from "./pages/Stats";
@@ -30,7 +29,7 @@ function App() {
   if (!isClientReady) return <div>Loading...</div>;
 
   return (
-    <Router>
+    <BrowserRouter>
       <div className="App">
         <AnimatedShape />
         <NavBar /> {/* Main navigation bar component */}
@@ -52,7 +51,7 @@ function App() {
           />
         </Routes>
       </div>
-    </Router>
+    </BrowserRouter>
   );
 }
 

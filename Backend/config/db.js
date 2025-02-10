@@ -10,7 +10,24 @@ const sequelize = new Sequelize(
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     dialect: "postgres",
-    logging: false,
+    logging: console.log, // Enable logging temporarily to debug
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000,
+    },
+    retry: {
+      match: [
+        /SequelizeConnectionError/,
+        /SequelizeConnectionRefusedError/,
+        /SequelizeHostNotFoundError/,
+        /SequelizeHostNotReachableError/,
+        /SequelizeInvalidConnectionError/,
+        /SequelizeConnectionTimedOutError/,
+      ],
+      max: 5,
+    },
   }
 );
 
@@ -18,10 +35,18 @@ const connectDB = async () => {
   try {
     await sequelize.authenticate();
     console.log("Database connected successfully.");
+
+    // Sync database (in development)
+    if (process.env.NODE_ENV === "development") {
+      await sequelize.sync({ alter: true });
+      console.log("Database synced successfully.");
+    }
   } catch (error) {
-    console.error("Unable to connect to the database:", error);
+    console.error("Database connection error:", error);
+    // Wait 5 seconds and try again
+    console.log("Retrying connection in 5 seconds...");
+    setTimeout(connectDB, 5000);
   }
 };
 
-connectDB(); // Initiate database connection
-module.exports = sequelize; // Export sequelize instance as default export
+module.exports = { sequelize, connectDB };
