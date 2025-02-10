@@ -25,6 +25,8 @@ jobs:
           file: ./Frontend/Dockerfile
           push: true
           tags: gslmoji/smk-front:latest
+          build-args: |
+            REACT_APP_API_URL=http://198.46.159.159:5000
 
       - name: Build and push Backend
         uses: docker/build-push-action@v3
@@ -47,5 +49,6 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           script: |
             cd /home/moji/smk/smk2
+            docker-compose down
             docker-compose pull
             docker-compose up -d
